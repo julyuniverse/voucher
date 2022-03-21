@@ -25,14 +25,13 @@ const LoginPage = () => {
 
     const submit = async (e) => {
         e.preventDefault();
-        //로그인을 진행하기위해서
-        //첫번째 useDispatch(액션) 을 활용해서 액션을 dispatch해준다
+
         const body = {
-            type: "login",
             id: formData.id,
             pw: formData.pw,
         };
-        dispatch(await loginUser(body));
+
+        dispatch(await loginUser(body)); // dispatch() 함수를 통해서 store에 등록
     }
 
     const logout = () => { // 로그아웃
@@ -43,16 +42,16 @@ const LoginPage = () => {
     const handleModalClose = (e) => {
         setShow(false);
         console.log(e)
-      };
-      
-      const handleModalOpen = () => {
+    };
+
+    const handleModalOpen = () => {
         setShow(true);
-      };
+    };
 
     return (
         <div>
             <div hidden={!show}>
-                <VoucherModal handleModalClose={handleModalClose} />
+                <VoucherModal handleModalClose={handleModalClose} loginIdNo={userReducer.loginIdNo} />
             </div>
 
             <div>
@@ -63,11 +62,11 @@ const LoginPage = () => {
             </div>
 
             <div>
-                        로고
-                    </div>
+                로고
+            </div>
             {userReducer.isLogin === 'n' ? (
                 <form>
-                    
+
                     <div>
                         <div>ID</div>
                         <div>

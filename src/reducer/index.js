@@ -1,7 +1,7 @@
 import { createStore, combineReducers } from 'redux';
 import userReducer from "./user/userReducer";
 
-const rootReducer = combineReducers({ // reducer들을 모운다.
+const rootReducer = combineReducers({ // reducer들을 모은다.
     userReducer,
 });
 

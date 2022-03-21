@@ -6,6 +6,6 @@ export const login = async (id_value, pw_value) => {
 }
 
 // 이용권 등록
-export const voucherRegistration = async (serial_number_value) => {
-    return await axios.post("/api/voucher.php", {type: "voucher_registration", serial_number: serial_number_value});
+export const voucherRegistration = async (serial_number_value, login_id_no_value) => {
+    return await axios.post("/api/voucher.php", {type: "voucher_registration", serial_number: serial_number_value, login_id_no: login_id_no_value});
 }

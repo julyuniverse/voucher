@@ -15,10 +15,24 @@ const VoucherModal = (props) => {
 
     const submit = async (e) => {
         e.preventDefault();
-        //로그인을 진행하기위해서
-        //첫번째 useDispatch(액션) 을 활용해서 액션을 dispatch해준다
-        let data = await voucherRegistration(serialNumber).then(res => res.data);
+
+        let data = await voucherRegistration(serialNumber, props.loginIdNo).then(res => res.data);
+
         console.log(data);
+
+        if (data.voucher_registration_state === 0 && data.voucher_state === 2) {
+            alert("시리얼 넘버가 존재하지 않아요. 다시 한번 확인해 주세요.");
+            return false;
+        } else if (data.voucher_registration_state === 0 && data.voucher_state === 3) {
+            alert("이미 사용한 시리얼 넘버에요. 다시 한번 확인해 주세요.");
+            return false;
+        } else if (data.voucher_registration_state === 0 && data.voucher_state === 4) {
+            alert("등록 기간이 지난 이용권입니다. 다시 한번 확인해 주세요.");
+            return false;
+        }
+
+        alert("이용권 등록이 완료되었습니다. 일프로연산 학습을 시작해 주세요!");
+        props.handleModalClose();
     }
 
     return (
