@@ -39,9 +39,8 @@ const LoginPage = () => {
         window.location.reload();
     }
 
-    const handleModalClose = (e) => {
+    const handleModalClose = () => {
         setShow(false);
-        console.log(e)
     };
 
     const handleModalOpen = () => {
@@ -65,28 +64,39 @@ const LoginPage = () => {
                 로고
             </div>
             {userReducer.isLogin === 'n' ? (
-                <form>
-
-                    <div>
-                        <div>ID</div>
+                <div>
+                    <form>
                         <div>
-                            <input type="text" name="id" placeholder="아이디를 입력해 주세요." value={formData.id || ""} onChange={handleFormData} />
+                            <div>ID</div>
+                            <div>
+                                <input type="text" name="id" placeholder="아이디를 입력해 주세요." value={formData.id || ""} onChange={handleFormData} />
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <div>PW</div>
                         <div>
-                            <input type="text" name="pw" placeholder="비밀번호를 입력해 주세요." value={formData.pw || ""} onChange={handleFormData} />
+                            <div>PW</div>
+                            <div>
+                                <input type="text" name="pw" placeholder="비밀번호를 입력해 주세요." value={formData.pw || ""} onChange={handleFormData} />
+                            </div>
                         </div>
-                    </div>
+                        <div>
+                            <div>
+                                <button type="submit" onClick={submit}>로그인</button>
+                            </div>
+                        </div>
+                    </form>
                     <div>
                         <div>
-                            <button type="submit" onClick={submit}>로그인</button>
-                        </div>
+                            <button type="button">회원가입</button>
+                            </div>
                     </div>
-                </form>
+                </div>
             ) : (
                 <div>
+                    <div>
+                        <div>
+                            {userReducer.userId}
+                        </div>
+                    </div>
                     <div>
                         <button type="button" onClick={handleModalOpen}>이용권 등록</button>
                     </div>
