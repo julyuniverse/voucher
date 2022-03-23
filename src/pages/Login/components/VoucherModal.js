@@ -1,60 +1,91 @@
-import { useState } from "react";
-import { voucherRegistration } from "../../../api/axios";
+import { useState, forwardRef, useImperativeHandle } from "react";
 
-const VoucherModal = (props) => {
+const VoucherModal = forwardRef((props, ref) => { // forwardRef로 부모에게 연결
     const [serialNumber, setSerialNumber] = useState("");
+
+    // Parent component는 이제 childRef.current.emptySerialNumber()를 통해 해당 값을 가져갈 수 있게 됩니다.
+    useImperativeHandle(ref, () => ({
+        emptySerialNumber: () => { setSerialNumber(""); },
+    }));
 
     const handleSerialNumber = (e) => {
         setSerialNumber(e.target.value);
     }
 
-    // const submit = async () => {
-    //     let data = await login(formData.id, formData.pw).then(res => res.data);
-    //     console.log(data);
-    // }
-
     const submit = async (e) => {
         e.preventDefault();
 
-        let data = await voucherRegistration(serialNumber, props.loginIdNo).then(res => res.data);
+        // Parameters
+        let processingFlag = true;
 
-        console.log(data);
-
-        if (data.voucher_registration_state === 0 && data.voucher_state === 2) {
-            alert("시리얼 넘버가 존재하지 않아요. 다시 한번 확인해 주세요.");
-            return false;
-        } else if (data.voucher_registration_state === 0 && data.voucher_state === 3) {
-            alert("이미 사용한 시리얼 넘버에요. 다시 한번 확인해 주세요.");
-            return false;
-        } else if (data.voucher_registration_state === 0 && data.voucher_state === 4) {
-            alert("등록 기간이 지난 이용권입니다. 다시 한번 확인해 주세요.");
+        if (serialNumber === "") {
+            alert("시리얼 넘버를 입력해 주세요.");
             return false;
         }
 
-        alert("이용권 등록이 완료되었습니다. 일프로연산 학습을 시작해 주세요!");
-        props.handleModalClose();
+        if (props.userReducer.payState === 1 && props.userReducer.experienceTicketState === 1) { // 체험권을 이용중인 사용자라면
+            if (window.confirm("체험권을 이용 중입니다. 현재 체험권 종료 날짜 이후로 이어서 이용권을 추가로 사용하시겠습니까?")) {
+                processingFlag = true;
+            } else {
+                processingFlag = false;
+            }
+        } else if (props.userReducer.payState === 1 && props.userReducer.experienceTicketState === 0) { // 유료 계정이라면
+            if (window.confirm("이미 결제한 유료 계정입니다. 현재 결제 종료 날짜 이후로 이어서 이용권을 추가로 사용하시겠습니까?")) {
+                processingFlag = true;
+            } else {
+                processingFlag = false;
+            }
+        }
+
+        if (processingFlag) {
+            if (window.confirm("등록하시겠습니까?")) {
+                const body = {
+                    serial_number: serialNumber,
+                    login_id_no: props.userReducer.loginIdNo,
+                    pay_state: props.userReducer.payState,
+                    experience_ticket_state: props.userReducer.experienceTicketState,
+                    handleModalClose: props.handleModalClose,
+                    setSerialNumber: setSerialNumber,
+                };
+
+                props.dispatch(await props.registerVoucher(body)); // dispatch() 함수를 통해서 store에 등록
+            }
+        }
     }
 
     return (
-        <div className="absolute inset-0 bg-[#cccccc]">
-            <div>
+        <div>
+            <div className="absolute inset-0 bg-[#cccccc] opacity-50"></div>
+            <div className="fixed left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 bg-[#ffffff] w-[320px] rounded-lg py-[14px] px-[20px]">
                 <div>
                     <form>
                         <div>
                             이용권 시리얼 넘버
                         </div>
                         <div>
-                            <input type="text" name="serial_number" placeholder="시리얼 넘버를 입력해 주세요." value={serialNumber || ""} onChange={handleSerialNumber} />
+                            <input
+                                className="w-[100%] border border-[#d9dce1] rounded-md mt-[10px] p-[4px] lg:mt-[12px] lg:p-[10px]"
+                                type="text" name="serial_number" placeholder="시리얼 넘버를 입력해 주세요." value={serialNumber || ""} onChange={handleSerialNumber} />
                         </div>
-                        <button type="submit" onClick={submit}>등록</button>
+
+                        <div className="mt-[20px] lg:mt-[26px]">
+                            <div>
+                                <button
+                                    className="w-[100%] bg-[#005ade] text-[#ffffff] rounded-md p-[4px] lg:p-[10px]"
+                                    type="submit" onClick={submit}>등록</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
-                <div>
-                    <button type="button" onClick={props.handleModalClose}>X</button>
+                <div className="mt-[10px] lg:mt-[12px]">
+                    <div>
+                        <button type="button" className="flex justify-center items-center w-[100%] bg-[#f3f4f6] rounded-md p-[4px] lg:p-[10px]" onClick={props.handleModalClose}>취소</button>
+                    </div>
                 </div>
             </div>
         </div>
+
     )
-}
+})
 
 export default VoucherModal;

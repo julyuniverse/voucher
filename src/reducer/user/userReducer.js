@@ -1,38 +1,171 @@
-import { login } from "../../api/axios";
+import { register, login, logout, voucherRegistration } from "../../api/axios";
 
 // Action Type
+const REGISTER_USER = "REGISTER_USER";
 const LOGIN_USER = "LOGIN_USER";
+const LOGOUT_USER = "LOGOUT_USER";
+const REGISTER_VOUCHER = "REGISTER_VOUCHER";
 
 // Action Create Function
-export const loginUser = async (data) => {
-    let returnData = await login(data.id, data.pw).then(res => res.data);
-    console.log(returnData);
+export const registerUser = async (data) => { // 회원가입
+    let returnData = await register(data.id, data.pw).then(res => res.data);
+
+    // Parameters
+    let loginState = 0;
+    let loginIdNo = 0;
+    let id = "";
+    let payState = 0;
+    let experienceTicketState = 0;
+
+    if (returnData.success === 0) {
+        if (returnData.error_code === 1) { // ID 중복
+            alert("이미 가입된 아이디입니다.");
+        }
+    } else if (returnData.success === 1) {
+        loginState = 1;
+        loginIdNo = returnData.login_id_no;
+        id = returnData.id;
+    }
+
     return {
-        type: LOGIN_USER,
-        isLogin: "y",
-        loginIdNo: returnData.login_id_no,
-        userId: returnData.id,
-        userName: returnData.name,
+        type: REGISTER_USER,
+        loginState: loginState,
+        loginIdNo: loginIdNo,
+        userId: id,
+        payState: payState,
+        experienceTicketState: experienceTicketState,
     }
 }
 
-// initState
-const initState = {
-    isLogin: "n",
-    loginIdNo: "",
-    userId: "",
-    userName: "",
+export const loginUser = async (data) => { // 로그인
+    let returnData = await login(data.id, data.pw).then(res => res.data);
+
+    // Parameters
+    let loginState = 0;
+    let loginIdNo = 0;
+    let id = "";
+    let payState = 0;
+    let experienceTicketState = 0;
+
+    if (returnData.success === 0) {
+        if (returnData.error_code === 1) { // ID 없음
+            alert("아이디를 확인해 주세요.");
+        } else if (returnData.error_code === 2) { // 비밀번호 틀림
+            alert("비밀번호를 확인해 주세요.");
+        }
+    } else if (returnData.success === 1) {
+        loginState = 1;
+        loginIdNo = returnData.login_id_no;
+        id = returnData.id;
+        payState = returnData.pay_state;
+        experienceTicketState = returnData.experience_ticket_state;
+    }
+
+    return {
+        type: LOGIN_USER,
+        loginState: loginState,
+        loginIdNo: loginIdNo,
+        userId: id,
+        payState: payState,
+        experienceTicketState: experienceTicketState,
+    }
+}
+
+export const logoutUser = async (data) => { // 로그아웃
+    let returnData = await logout(data.login_id_no).then(res => res.data);
+
+    // Parameters
+    let loginState = 0;
+    let loginIdNo = 0;
+    let id = "";
+    let payState = 0;
+    let experienceTicketState = 0;
+
+    return {
+        type: LOGOUT_USER,
+        loginState: loginState,
+        loginIdNo: loginIdNo,
+        userId: id,
+        payState: payState,
+        experienceTicketState: experienceTicketState,
+    }
+}
+
+export const registerVoucher = async (data) => { // 이용권 등록
+    let returnData = await voucherRegistration(data.serial_number, data.login_id_no).then(res => res.data);
+
+    // Parameters
+    let payState = data.pay_state;
+    let experienceTicketState = data.experience_ticket_state;
+
+    if (returnData.success === 0 && returnData.voucher_state === 2) {
+        alert("시리얼 넘버가 존재하지 않아요. 다시 한번 확인해 주세요.");
+    } else if (returnData.success === 0 && returnData.voucher_state === 3) {
+        alert("이미 사용한 시리얼 넘버에요. 다시 한번 확인해 주세요.");
+    } else if (returnData.success === 0 && returnData.voucher_state === 4) {
+        alert("등록 기간이 지난 이용권입니다. 다시 한번 확인해 주세요.");
+    } else if (returnData.success === 0 && returnData.voucher_state === 5) {
+        alert("이미 결제한 유료 계정은 체험권을 사용할 수 없어요.");
+    } else if (returnData.success === 0 && returnData.voucher_state === 6) {
+        alert("이미 체험권을 이용 중이라 체험권을 중복 사용할 수 없어요.");
+    } else if (returnData.success === 1 && returnData.voucher_state == 1) {
+        alert("이용권 등록이 완료되었습니다. 일프로연산 학습을 시작해 주세요!");
+        payState = 1;
+        if (returnData.voucher_type === 33) {
+            experienceTicketState = 1;
+        }
+        data.handleModalClose();
+        data.setSerialNumber("");
+    }
+
+    return {
+        type: REGISTER_VOUCHER,
+        payState: payState,
+        experienceTicketState: experienceTicketState,
+    }
+}
+
+// Initial State
+const initialState = {
+    loginState: 0, // 로그인 상태
+    loginIdNo: 0, // LOGIN_ID->NO
+    userId: "", // 사용자 ID
+    payState: 0, // 결제 상태
+    experienceTicketState: 0, // 체험권 상태
 }
 
 // Reducer
-export default function userReducer(state = initState, action) {
+export default function userReducer(state = initialState, action) {
     switch (action.type) {
-        case LOGIN_USER:
+        case REGISTER_USER:
             return {
-                isLogin: action.isLogin,
+                loginState: action.loginState,
                 loginIdNo: action.loginIdNo,
                 userId: action.userId,
-                userName: action.userName
+                payState: action.payState,
+                experienceTicketState: action.experienceTicketState,
+            }
+        case LOGIN_USER:
+            return {
+                loginState: action.loginState,
+                loginIdNo: action.loginIdNo,
+                userId: action.userId,
+                payState: action.payState,
+                experienceTicketState: action.experienceTicketState,
+            }
+        case LOGOUT_USER:
+            return {
+                loginState: action.loginState,
+                loginIdNo: action.loginIdNo,
+                userId: action.userId,
+                payState: action.payState,
+                experienceTicketState: action.experienceTicketState,
+            }
+        case REGISTER_VOUCHER:
+            return {
+                ...state,
+                payState: action.payState,
+                experienceTicketState: action.experienceTicketState,
             }
         default:
             return state;
