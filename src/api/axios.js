@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../utils/axios";
 
 // 회원가입
 export const register = async (id_value, pw_value) => {

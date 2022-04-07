@@ -6,7 +6,7 @@ const instance = axios.create({
         'Access-Control-Allow-Headers': 'Content-Type',
         'Content-Type': 'application/json',
     },
-    baseURL: 'http://onepromath.cafe24.com',
+    baseURL: process.env.REACT_APP_HOST,
 });
 
 export default instance;

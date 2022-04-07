@@ -2,6 +2,7 @@
   "name": "voucher",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.4",
@@ -43,6 +44,5 @@
     "autoprefixer": "^10.4.4",
     "postcss": "^8.4.12",
     "tailwindcss": "^3.0.23"
-  },
-  "proxy": "http://onepromath.cafe24.com"
+  }
 }

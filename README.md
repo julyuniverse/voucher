@@ -6,3 +6,5 @@
 ## Update log
 - 2022-03-21
   - First Commit
+- 2022-04-07
+  - env 추가 및 기타 수정
