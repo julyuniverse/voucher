@@ -1,8 +1,7 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { loginUser, logoutUser, registerVoucher } from "../../reducer/user/userReducer";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import VoucherModal from "./components/VoucherModal";
 import logo96 from "../../assets/images/logo96.png";
 
@@ -111,11 +110,6 @@ const LoginPage = () => {
                                     </div>
                                 </div>
                             </form>
-                            <div className="mt-[10px] lg:mt-[12px]">
-                                <div>
-                                    <Link className="flex justify-center items-center w-[100%] bg-[#f3f4f6] rounded-md p-[4px] lg:p-[10px]" to="/register">회원가입</Link>
-                                </div>
-                            </div>
                         </div>
                     ) : (
                         <div>

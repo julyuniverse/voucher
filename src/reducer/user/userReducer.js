@@ -1,42 +1,11 @@
-import { register, login, logout, voucherRegistration } from "../../api/axios";
+import { login, logout, voucherRegistration } from "../../api/axios";
 
 // Action Type
-const REGISTER_USER = "REGISTER_USER";
 const LOGIN_USER = "LOGIN_USER";
 const LOGOUT_USER = "LOGOUT_USER";
 const REGISTER_VOUCHER = "REGISTER_VOUCHER";
 
 // Action Create Function
-export const registerUser = async (data) => { // 회원가입
-    let returnData = await register(data.id, data.pw).then(res => res.data);
-
-    // Parameters
-    let loginState = 0;
-    let loginIdNo = 0;
-    let id = "";
-    let payState = 0;
-    let experienceTicketState = 0;
-
-    if (returnData.success === 0) {
-        if (returnData.error_code === 1) { // ID 중복
-            alert("이미 가입된 아이디입니다.");
-        }
-    } else if (returnData.success === 1) {
-        loginState = 1;
-        loginIdNo = returnData.login_id_no;
-        id = returnData.id;
-    }
-
-    return {
-        type: REGISTER_USER,
-        loginState: loginState,
-        loginIdNo: loginIdNo,
-        userId: id,
-        payState: payState,
-        experienceTicketState: experienceTicketState,
-    }
-}
-
 export const loginUser = async (data) => { // 로그인
     let returnData = await login(data.id, data.pw).then(res => res.data);
 
@@ -99,15 +68,17 @@ export const registerVoucher = async (data) => { // 이용권 등록
     let experienceTicketState = data.experience_ticket_state;
 
     if (returnData.success === 0 && returnData.voucher_state === 2) {
-        alert("시리얼 넘버가 존재하지 않아요. 다시 한번 확인해 주세요.");
+        alert("이용권 코드가 존재하지 않아요. 다시 한번 확인해 주세요.");
     } else if (returnData.success === 0 && returnData.voucher_state === 3) {
-        alert("이미 사용한 시리얼 넘버에요. 다시 한번 확인해 주세요.");
+        alert("이미 사용한 이용권에요. 다시 한번 확인해 주세요.");
     } else if (returnData.success === 0 && returnData.voucher_state === 4) {
         alert("등록 기간이 지난 이용권입니다. 다시 한번 확인해 주세요.");
     } else if (returnData.success === 0 && returnData.voucher_state === 5) {
         alert("이미 결제한 유료 계정은 체험권을 사용할 수 없어요.");
     } else if (returnData.success === 0 && returnData.voucher_state === 6) {
         alert("이미 체험권을 이용 중이라 체험권을 중복 사용할 수 없어요.");
+    } else if (returnData.success === 0 && returnData.voucher_state === 7) {
+        alert("이미 이 전에 같은 체험권을 이용한 내역이 있어서 사용할 수 없어요.");
     } else if (returnData.success === 1 && returnData.voucher_state == 1) {
         alert("이용권 등록이 완료되었습니다. 일프로연산 학습을 시작해 주세요!");
         payState = 1;
@@ -137,14 +108,6 @@ const initialState = {
 // Reducer
 export default function userReducer(state = initialState, action) {
     switch (action.type) {
-        case REGISTER_USER:
-            return {
-                loginState: action.loginState,
-                loginIdNo: action.loginIdNo,
-                userId: action.userId,
-                payState: action.payState,
-                experienceTicketState: action.experienceTicketState,
-            }
         case LOGIN_USER:
             return {
                 loginState: action.loginState,

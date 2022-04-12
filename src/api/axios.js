@@ -1,10 +1,5 @@
 import axios from "../utils/axios";
 
-// 회원가입
-export const register = async (id_value, pw_value) => {
-    return await axios.post("/api/auth.php", { type: "register", id: id_value, pw: pw_value });
-}
-
 // 로그인
 export const login = async (id_value, pw_value) => {
     return await axios.post("/api/auth.php", { type: "login", id: id_value, pw: pw_value });
