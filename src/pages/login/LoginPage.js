@@ -4,6 +4,7 @@ import { loginUser, logoutUser, registerVoucher } from "../../reducer/user/userR
 import { useSelector } from "react-redux";
 import VoucherModal from "./components/VoucherModal";
 import logo96 from "../../assets/images/logo96.png";
+import { ReactComponent as Logo } from "../../assets/svgs/logo.svg";
 
 const LoginPage = () => {
     const userReducer = useSelector((state) => state.userReducer); // reducer가 하나라면 state.userId로 가능하지만 여러 개인 reducer들을 하나로 합쳤기 때문에 해당 reducer를 선택하고 하위 state를 찾는다.
@@ -79,7 +80,7 @@ const LoginPage = () => {
 
             <div className="mt-[160px]">
                 <div className="flex justify-center items-center">
-                    <img src={logo96} className="h-[72px] w-[72px] lg:h-auto lg:w-auto" alt="onepromath_logo" />
+                    <Logo width="96" height="96" className="h-[72px] w-[72px] lg:h-auto lg:w-auto" />
                 </div>
 
                 <div className="shadow-md bg-[#ffffff] rounded-lg w-[300px] mt-[40px] py-[14px] px-[20px] lg:w-[500px] lg:mt-[50px] lg:py-[20px] lg:px-[30px]">
