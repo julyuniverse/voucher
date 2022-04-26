@@ -84,6 +84,8 @@ export const registerVoucher = async (data) => { // 이용권 등록
         payState = 1;
         if (returnData.voucher_type === 33) {
             experienceTicketState = 1;
+        } else {
+            experienceTicketState = 0;
         }
         data.handleModalClose();
         data.setSerialNumber("");
