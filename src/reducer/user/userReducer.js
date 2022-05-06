@@ -70,7 +70,7 @@ export const registerVoucher = async (data) => { // 이용권 등록
     if (returnData.success === 0 && returnData.voucher_state === 2) {
         alert("이용권 코드가 존재하지 않아요. 다시 한번 확인해 주세요.");
     } else if (returnData.success === 0 && returnData.voucher_state === 3) {
-        alert("이미 사용한 이용권에요. 다시 한번 확인해 주세요.");
+        alert("이미 사용한 이용권이에요. 다시 한번 확인해 주세요.");
     } else if (returnData.success === 0 && returnData.voucher_state === 4) {
         alert("등록 기간이 지난 이용권입니다. 다시 한번 확인해 주세요.");
     } else if (returnData.success === 0 && returnData.voucher_state === 5) {

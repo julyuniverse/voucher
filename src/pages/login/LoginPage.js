@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import VoucherModal from "./components/VoucherModal";
 import logo96 from "../../assets/images/logo96.png";
 import { ReactComponent as Logo } from "../../assets/svgs/logo.svg";
+import help1 from "../../assets/images/help1.png";
 
 const LoginPage = () => {
     const userReducer = useSelector((state) => state.userReducer); // reducer가 하나라면 state.userId로 가능하지만 여러 개인 reducer들을 하나로 합쳤기 때문에 해당 reducer를 선택하고 하위 state를 찾는다.
@@ -88,7 +89,7 @@ const LoginPage = () => {
                         <div>
                             <form>
                                 <div>
-                                    <div>ID</div>
+                                    <div>일프로연산 앱 ID</div>
                                     <div>
                                         <input
                                             className="w-[100%] border border-[#d9dce1] rounded-md mt-[10px] p-[4px] lg:mt-[12px] lg:p-[10px]"
@@ -136,6 +137,12 @@ const LoginPage = () => {
                             </div>
                         </div>
                     )}
+                </div>
+
+                <div className="mt-[60px] mb-[120px] lg:mt-[80px] lg:mb-[160px]">
+                    <div className="w-[300px] lg:w-[auto]">
+                        <img src={help1} alt="help1" />
+                    </div>
                 </div>
             </div>
         </div>
