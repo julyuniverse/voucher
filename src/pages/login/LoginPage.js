@@ -117,7 +117,7 @@ const LoginPage = () => {
                         <div>
                             <div>
                                 <div>
-                                    <div>ID</div>
+                                    <div>일프로연산 앱 ID</div>
                                     <div>
                                         <div className="w-[100%] border border-[#d9dce1] rounded-md mt-[10px] p-[4px] lg:mt-[12px] lg:p-[10px]">
                                             {userReducer.userId}
