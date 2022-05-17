@@ -15,6 +15,11 @@ const VoucherModal = forwardRef((props, ref) => { // forwardRef로 부모에게 
     const submit = async (e) => {
         e.preventDefault();
 
+        if (props.userReducer.schoolIdState === 1) { // 학교||학원 계정은 이용권||체험권 등록 불가
+            alert("학교 또는 학원 계정은 이용권 또는 체험권을 등록할 수 없어요.");
+            return false;
+        }
+
         if (serialNumber === "") {
             alert("이용권 코드를 입력해 주세요.");
             return false;
@@ -26,6 +31,7 @@ const VoucherModal = forwardRef((props, ref) => { // forwardRef로 부모에게 
                     serial_number: serialNumber,
                     login_id_no: props.userReducer.loginIdNo,
                     pay_state: props.userReducer.payState,
+                    school_id_state: props.userReducer.schoolIdState,
                     experience_ticket_state: props.userReducer.experienceTicketState,
                     handleModalClose: props.handleModalClose,
                     setSerialNumber: setSerialNumber,
@@ -43,6 +49,7 @@ const VoucherModal = forwardRef((props, ref) => { // forwardRef로 부모에게 
                     serial_number: serialNumber,
                     login_id_no: props.userReducer.loginIdNo,
                     pay_state: props.userReducer.payState,
+                    school_id_state: props.userReducer.schoolIdState,
                     experience_ticket_state: props.userReducer.experienceTicketState,
                     handleModalClose: props.handleModalClose,
                     setSerialNumber: setSerialNumber,
@@ -61,6 +68,7 @@ const VoucherModal = forwardRef((props, ref) => { // forwardRef로 부모에게 
                 serial_number: serialNumber,
                 login_id_no: props.userReducer.loginIdNo,
                 pay_state: props.userReducer.payState,
+                school_id_state: props.userReducer.schoolIdState,
                 experience_ticket_state: props.userReducer.experienceTicketState,
                 handleModalClose: props.handleModalClose,
                 setSerialNumber: setSerialNumber,

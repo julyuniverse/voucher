@@ -13,6 +13,7 @@ export const loginUser = async (data) => { // 로그인
     let loginState = 0;
     let loginIdNo = 0;
     let id = "";
+    let schoolIdState = 0;
     let payState = 0;
     let experienceTicketState = 0;
 
@@ -26,6 +27,7 @@ export const loginUser = async (data) => { // 로그인
         loginState = 1;
         loginIdNo = returnData.login_id_no;
         id = returnData.id;
+        schoolIdState = returnData.school_id_state;
         payState = returnData.pay_state;
         experienceTicketState = returnData.experience_ticket_state;
     }
@@ -35,6 +37,7 @@ export const loginUser = async (data) => { // 로그인
         loginState: loginState,
         loginIdNo: loginIdNo,
         userId: id,
+        schoolIdState: schoolIdState,
         payState: payState,
         experienceTicketState: experienceTicketState,
     }
@@ -47,6 +50,7 @@ export const logoutUser = async (data) => { // 로그아웃
     let loginState = 0;
     let loginIdNo = 0;
     let id = "";
+    let schoolIdState = 0;
     let payState = 0;
     let experienceTicketState = 0;
 
@@ -55,6 +59,7 @@ export const logoutUser = async (data) => { // 로그아웃
         loginState: loginState,
         loginIdNo: loginIdNo,
         userId: id,
+        schoolIdState: schoolIdState,
         payState: payState,
         experienceTicketState: experienceTicketState,
     }
@@ -79,6 +84,8 @@ export const registerVoucher = async (data) => { // 이용권 등록
         alert("이미 체험권을 이용 중이라 체험권을 중복 사용할 수 없어요.");
     } else if (returnData.success === 0 && returnData.voucher_state === 7) {
         alert("이미 이 전에 같은 체험권을 이용한 내역이 있어서 사용할 수 없어요.");
+    } else if (returnData.success === 0 && returnData.voucher_state === 8) {
+        alert("학교 또는 학원 계정은 이용권 또는 체험권을 등록할 수 없어요.");
     } else if (returnData.success === 1 && returnData.voucher_state == 1) {
         alert("이용권 등록이 완료되었습니다. 일프로연산 학습을 시작해 주세요!");
         payState = 1;
@@ -89,6 +96,8 @@ export const registerVoucher = async (data) => { // 이용권 등록
         }
         data.handleModalClose();
         data.setSerialNumber("");
+    } else {
+        alert("이용권 등록이 불가합니다. 고객센터로 문의해 주세요.");
     }
 
     return {
@@ -103,6 +112,7 @@ const initialState = {
     loginState: 0, // 로그인 상태
     loginIdNo: 0, // LOGIN_ID->NO
     userId: "", // 사용자 ID
+    schoolIdState: 0, // 학교||학원 계정 상태
     payState: 0, // 결제 상태
     experienceTicketState: 0, // 체험권 상태
 }
@@ -115,6 +125,7 @@ export default function userReducer(state = initialState, action) {
                 loginState: action.loginState,
                 loginIdNo: action.loginIdNo,
                 userId: action.userId,
+                schoolIdState: action.schoolIdState,
                 payState: action.payState,
                 experienceTicketState: action.experienceTicketState,
             }
@@ -123,6 +134,7 @@ export default function userReducer(state = initialState, action) {
                 loginState: action.loginState,
                 loginIdNo: action.loginIdNo,
                 userId: action.userId,
+                schoolIdState: action.schoolIdState,
                 payState: action.payState,
                 experienceTicketState: action.experienceTicketState,
             }

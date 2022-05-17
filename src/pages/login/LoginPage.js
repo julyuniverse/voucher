@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { loginUser, logoutUser, registerVoucher } from "../../reducer/user/userReducer";
 import { useSelector } from "react-redux";
 import VoucherModal from "./components/VoucherModal";
-import logo96 from "../../assets/images/logo96.png";
 import { ReactComponent as Logo } from "../../assets/svgs/logo.svg";
 import help1 from "../../assets/images/help1.png";
 
@@ -71,6 +70,7 @@ const LoginPage = () => {
                 {userReducer.loginState}<br />
                 {userReducer.loginIdNo}<br />
                 {userReducer.userId}<br />
+                {userReducer.schoolIdState}<br />
                 {userReducer.payState}<br />
                 {userReducer.experienceTicketState}<br />
             </div> */}
