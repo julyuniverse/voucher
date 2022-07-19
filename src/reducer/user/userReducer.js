@@ -86,7 +86,7 @@ export const registerVoucher = async (data) => { // 이용권 등록
         alert("이미 이 전에 같은 체험권을 이용한 내역이 있어서 사용할 수 없어요.");
     } else if (returnData.success === 0 && returnData.voucher_state === 8) {
         alert("학교 또는 학원 계정은 이용권 또는 체험권을 등록할 수 없어요.");
-    } else if (returnData.success === 1 && returnData.voucher_state == 1) {
+    } else if (returnData.success === 1 && returnData.voucher_state === 1) {
         alert("이용권 등록이 완료되었습니다. 일프로연산 학습을 시작해 주세요!");
         payState = 1;
         if (returnData.voucher_type === 42) { // 체험권일 경우
