@@ -89,7 +89,7 @@ export const registerVoucher = async (data) => { // 이용권 등록
     } else if (returnData.success === 1 && returnData.voucher_state == 1) {
         alert("이용권 등록이 완료되었습니다. 일프로연산 학습을 시작해 주세요!");
         payState = 1;
-        if (returnData.voucher_type === 33) {
+        if (returnData.voucher_type === 42) { // 체험권일 경우
             experienceTicketState = 1;
         } else {
             experienceTicketState = 0;
